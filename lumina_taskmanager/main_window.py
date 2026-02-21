@@ -108,5 +108,5 @@ class TaskManager(QMainWindow):
         QMessageBox.information(
             self,
             "Acerca de Lumina Task Manager",
-            "Lumina Task Manager\nVersión 1.0\nCreado por Shinobu"
+            "Lumina Task Manager\nVersión 1.0.1\nCreado por Shinobu Haruto"
         )
