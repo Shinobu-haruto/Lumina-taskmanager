@@ -1,0 +1,3 @@
+PyQt6>=6.0.0
+PyQtGraph>=0.13.0
+psutil>=5.9.0
