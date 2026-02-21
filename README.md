@@ -22,7 +22,8 @@
 - Usuario actual mostrado automáticamente.
 
 ---
-
+## Preview
+![Lumina Task Manager Preview](taskmanager_lumina.png)
 ## 🔹 Instalación
 
 1. Clonar el repositorio:
