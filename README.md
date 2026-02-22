@@ -174,7 +174,9 @@ python main.py
 
 ## 📸 Capturas
 
-![Lumina Task Manager Preview](taskmanager_lumina.png)
+![Lumina Task Manager Preview](docs/cpu.png)
+![Lumina Task Manager Preview](docs/ram.png)
+![Lumina Task Manager Preview](docs/disk.png)
 
 *Interfaz principal con monitor de rendimiento en tiempo real*
 
