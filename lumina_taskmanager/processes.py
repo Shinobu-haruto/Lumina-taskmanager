@@ -1,94 +1,95 @@
+from PyQt6.QtWidgets import (
+    QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem,
+    QPushButton, QMessageBox, QHBoxLayout
+)
+from PyQt6.QtCore import QTimer, Qt
 import psutil
 
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout,
-    QTableWidget, QTableWidgetItem,
-    QPushButton, QMessageBox
-)
-from PyQt6.QtCore import QTimer
-
-
 class ProcessTab(QWidget):
-
     def __init__(self):
         super().__init__()
-
         self.layout = QVBoxLayout(self)
 
+        # Tabla de procesos
         self.table = QTableWidget()
         self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(
-            ["PID", "Nombre", "CPU %", "Memoria %"]
-        )
+        self.table.setHorizontalHeaderLabels(["PID", "Nombre", "Usuario", "Estado"])
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.layout.addWidget(self.table)
 
-        self.kill_button = QPushButton("Finalizar proceso")
-        self.kill_button.clicked.connect(self.kill_selected_process)
-        self.layout.addWidget(self.kill_button)
+        # Contenedor inferior para el botón
+        button_container = QHBoxLayout()
+        button_container.addStretch()  # Empuja el botón a la derecha
+        self.action_button = QPushButton("Finalizar / Reiniciar")
+        self.action_button.clicked.connect(self.perform_action)
+        button_container.addWidget(self.action_button)
+        self.layout.addLayout(button_container)
 
+        # Timer para actualizar la tabla
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_processes)
-        self.timer.start(2000)
+        self.timer.start(3000)
 
         self.update_processes()
 
     def update_processes(self):
+        procs = list(psutil.process_iter(['pid', 'name', 'username', 'status']))
+        self.table.setRowCount(0)
+        for proc in procs:
+            row = self.table.rowCount()
+            self.table.insertRow(row)
+            self.table.setItem(row, 0, QTableWidgetItem(str(proc.info['pid'])))
+            self.table.setItem(row, 1, QTableWidgetItem(proc.info['name']))
+            self.table.setItem(row, 2, QTableWidgetItem(proc.info['username'] or "N/A"))
+            self.table.setItem(row, 3, QTableWidgetItem(proc.info['status']))
 
-        processes = list(
-            psutil.process_iter(
-                ['pid', 'name', 'cpu_percent', 'memory_percent']
-            )
-        )
+            # Colorear filas de sistema
+            if self.is_system_process(proc):
+                for col in range(4):
+                    item = self.table.item(row, col)
+                    if item:
+                        item.setBackground(Qt.GlobalColor.lightGray)
 
-        self.table.setRowCount(len(processes))
+    def get_selected_process(self):
+        selected_rows = self.table.selectionModel().selectedRows()
+        if selected_rows:
+            row = selected_rows[0].row()
+            pid_item = self.table.item(row, 0)
+            if pid_item:
+                pid = int(pid_item.text())
+                try:
+                    return psutil.Process(pid)
+                except psutil.NoSuchProcess:
+                    QMessageBox.warning(self, "Error", "El proceso ya no existe.")
+        return None
 
-        for row, process in enumerate(processes):
-
-            self.table.setItem(
-                row, 0,
-                QTableWidgetItem(str(process.info['pid']))
-            )
-            self.table.setItem(
-                row, 1,
-                QTableWidgetItem(str(process.info['name']))
-            )
-            self.table.setItem(
-                row, 2,
-                QTableWidgetItem(str(process.info['cpu_percent']))
-            )
-            self.table.setItem(
-                row, 3,
-                QTableWidgetItem(
-                    f"{process.info['memory_percent']:.2f}"
-                )
-            )
-
-    def kill_selected_process(self):
-
-        selected = self.table.currentRow()
-        if selected < 0:
+    def perform_action(self):
+        proc = self.get_selected_process()
+        if not proc:
             return
+        if self.is_system_process(proc):
+            self.restart_process(proc)
+        else:
+            self.terminate_process(proc)
 
-        pid = int(self.table.item(selected, 0).text())
-        name = self.table.item(selected, 1).text()
+    def is_system_process(self, proc):
+        try:
+            uname = (proc.info['username'] or "").lower()
+            return proc.info['pid'] < 100 or 'root' in uname or 'system' in uname
+        except Exception:
+            return True
 
-        reply = QMessageBox.question(
-            self,
-            "Confirmar",
-            f"¿Finalizar proceso '{name}' (PID {pid})?",
-            QMessageBox.StandardButton.Yes |
-            QMessageBox.StandardButton.No
-        )
+    def terminate_process(self, proc):
+        try:
+            proc.terminate()
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"No se pudo finalizar: {e}")
 
-        if reply == QMessageBox.StandardButton.Yes:
-            try:
-                proc = psutil.Process(pid)
-                proc.terminate()
-                proc.wait(timeout=3)
-            except Exception:
-                pass
-
-        self.update_processes()
-
-    def stop(self):
-        self.timer.stop()
+    def restart_process(self, proc):
+        try:
+            proc.terminate()
+            proc.wait(timeout=3)
+            # Aquí se puede reiniciar usando proc.exe() si es confiable
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"No se pudo reiniciar: {e}")
