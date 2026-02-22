@@ -19,7 +19,7 @@
 
 **Lumina Task Manager** es un monitor de sistema avanzado diseñado específicamente para Linux. Inspirado en el Task Manager de Windows pero optimizado para el escritorio Linux, ofrece una interfaz moderna y minimalista con todas las herramientas que necesitas para supervisar tu sistema.
 
-Construido con **PyQt6** y **PyQtGraph**, combina rendimiento, funcionalidad y diseño hermoso.
+Construido con **PyQt6** y **PyQtGraph**, combina rendimiento, funcionalidad y diseño hermoso. Ahora con interfaz por **pestañas tipo cards** para que el usuario pueda navegar de manera intuitiva.
 
 ---
 
@@ -28,16 +28,17 @@ Construido con **PyQt6** y **PyQtGraph**, combina rendimiento, funcionalidad y d
 ### 🔧 Monitor de Procesos
 - ✅ Monitoreo en **tiempo real** de procesos activos
 - ✅ Visualización de **CPU** y **RAM** por proceso
-- ✅ **Terminar procesos** directamente desde la interfaz
-- ✅ Información detallada de cada proceso
+- ✅ **Terminar procesos** o **reiniciar demonios del sistema** directamente desde la interfaz
+- ✅ Información detallada de cada proceso (PID, estado, usuario, memoria, threads, tiempo CPU)
 - ✅ Búsqueda y filtrado de procesos
+- ✅ Interfaz organizada por pestañas para no saturar al usuario
 
 ### 📊 Rendimiento del Sistema
-- ✅ **CPU**: Monitoreo total y por núcleo
-- ✅ **Memoria RAM**: Uso en tiempo real con gráficos
-- ✅ **Disco**: Velocidad de lectura/escritura (MB/s)
+- ✅ **CPU**: Monitoreo total y por núcleo con nombre y velocidad en GHz
+- ✅ **Memoria RAM**: Uso en tiempo real, RAM total y swap
+- ✅ **Discos**: Velocidad de lectura/escritura (MB/s), cada disco con su subgráfica
 - ✅ **Red**: Monitoreo de ancho de banda (MB/s)
-- ✅ **Uptime del sistema**
+- ✅ **Uptime** y **IP local** detectada automáticamente
 - ✅ Gráficos dinámicos con PyQtGraph
 - ✅ Menú contextual para opciones adicionales
 
@@ -48,20 +49,24 @@ Construido con **PyQt6** y **PyQtGraph**, combina rendimiento, funcionalidad y d
 
 ### ℹ️ Detalles del Sistema
 - ✅ Información completa del hardware
+- ✅ Nombre del CPU, frecuencia, número de procesos y memoria swap
 - ✅ IP local automáticamente detectada
 - ✅ Usuario actual mostrado
 - ✅ Build y versión del sistema
 
 ### 🎨 Diseño
 - ✅ Tema minimalista con **fondo blanco**
-- ✅ **Curvas verdes** al estilo Windows Task Manager
+- ✅ **Curvas verdes y moradas** al estilo Windows Task Manager
 - ✅ Interfaz intuitiva y responsiva
 - ✅ Iconografía clara y moderna
+- ✅ Pestañas tipo cards para separar secciones
 
 ### 🛠️ Funcionalidades Extra
 - ✅ Ejecutar programas directamente desde la aplicación
+- ✅ Acceso directo en el menú de aplicaciones y escritorio
 - ✅ Soporte para temas personalizados
-- ✅ Acceso rápido mediante toolbar
+- ✅ Multilenguaje (incluye español, inglés y japonés)
+- ✅ Toolbar para acceso rápido
 
 ---
 
@@ -84,7 +89,6 @@ pip install -r requirements.txt
 
 # Ejecutar
 python main.py
-```
 
 ### Opción 2: Instalación con Python
 
