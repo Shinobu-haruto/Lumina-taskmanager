@@ -22,7 +22,7 @@ class TaskManager(QMainWindow):
         # Toolbar minimalista
         # ---------------------------
         self.toolbar = self.addToolBar("Principal")
-        self.toolbar.setIconSize(QSize(28, 28))
+        self.toolbar.setIconSize(QSize(16, 16))
         self.toolbar.setMovable(False)
         self.toolbar.setStyleSheet("""
             QToolBar {
@@ -40,13 +40,13 @@ class TaskManager(QMainWindow):
         """)
 
         run_action = self.toolbar.addAction(QIcon.fromTheme("system-run"), "")
-        run_action.setToolTip("Ejecutar programa")
+        run_action.setToolTip("New Task as Administrator")
         run_action.triggered.connect(self.run_program)
 
         self.toolbar.addSeparator()
 
         about_action = self.toolbar.addAction(QIcon.fromTheme("help-about"), "")
-        about_action.setToolTip("Acerca de Lumina")
+        about_action.setToolTip("About as Lumina")
         about_action.triggered.connect(self.show_about)
 
         # ---------------------------
@@ -69,9 +69,9 @@ class TaskManager(QMainWindow):
         main_layout.addWidget(self.card_panel)
 
         self.tabs_info = [
-            ("Procesos", "utilities-system-monitor"),
-            ("Rendimiento", "view-statistics"),
-            ("Usuarios", "system-users"),
+            ("Process", "utilities-system-monitor"),
+            ("Perfomance", "view-statistics"),
+            ("Users", "system-users"),
             ("Detalles", "dialog-information")
         ]
 
@@ -183,7 +183,7 @@ class TaskManager(QMainWindow):
     # ---------------------------
     def run_program(self):
         from PyQt6.QtWidgets import QInputDialog
-        prog, ok = QInputDialog.getText(self, "Ejecutar programa", "Ingrese comando:")
+        prog, ok = QInputDialog.getText(self, "New Task", "Input Program:")
         if ok and prog.strip():
             try:
                 subprocess.Popen(prog.strip().split())
