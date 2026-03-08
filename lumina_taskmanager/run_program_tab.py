@@ -12,14 +12,14 @@ class RunProgramTab(QWidget):
         self.setLayout(self.layout)
 
         # Título
-        title = QLabel("New Task as Administrator")
+        title = QLabel("Ejecutar Programa")
         title.setStyleSheet("font-size: 16px; font-weight: bold;")
         self.layout.addWidget(title)
 
         # Input y botón
         input_layout = QHBoxLayout()
         self.input_line = QLineEdit()
-        self.input_line.setPlaceholderText("Execute Program")
+        self.input_line.setPlaceholderText("Escribe comando o ruta del programa")
         self.input_line.setStyleSheet("background-color: white; color: green; font-size: 14px;")
         input_layout.addWidget(self.input_line)
 

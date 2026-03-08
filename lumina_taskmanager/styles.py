@@ -1,14 +1,13 @@
+# lumina_taskmanager/styles.py
+LUMINA_BUILD_DATA = {
+    "Brand": "Lumina",
+    "Codename": "Zenith",
+    "Release": "2601",
+    "Build": "2126.0",
+    "Channel": "dev",
+    "Date": "2026-01-25"
+}
+
 def get_main_style():
-    return """
-    QMainWindow {
-        background-color: #f3f3f3;
-    }
-    QListWidget {
-        background-color: white;
-        border-right: 1px solid #ccc;
-        font-size: 14px;
-    }
-    QLabel {
-        font-size: 16px;
-    }
-    """
+    # Tu CSS actual...
+    return "QMainWindow { ... }"
